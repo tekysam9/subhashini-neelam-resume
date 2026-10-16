@@ -1,0 +1,19 @@
+name: decode-resume
+on:
+  push:
+    paths: ['resume.pdf.b64', '.github/workflows/decode.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  decode:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          base64 -d resume.pdf.b64 > Subhashini_Neelam_Resume.pdf
+          git rm -q resume.pdf.b64
+          git config user.name github-actions
+          git config user.email github-actions@users.noreply.github.com
+          git add Subhashini_Neelam_Resume.pdf
+          git commit -m "Add resume PDF" && git push
